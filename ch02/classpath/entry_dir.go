@@ -10,7 +10,7 @@ type DirEntry struct {
 	absDir string
 }
 
-func (self *DirEntry) string() string {
+func (self *DirEntry) String() string {
 	return self.absDir
 }
 

@@ -13,7 +13,7 @@ const pathListSeparator = string(os.PathListSeparator)
 */
 type Entry interface {
 	readClass(className string) ([]byte, Entry, error)
-	string() string
+	String() string
 }
 
 func newEntry(path string) Entry {

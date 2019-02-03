@@ -8,8 +8,8 @@ import (
 //目录型入口实现,实现Entry接口
 type CompositeEntry []Entry
 
-func (self *CompositeEntry) string() string {
-	return self.string()
+func (self *CompositeEntry) String() string {
+	return self.String()
 }
 
 //构造函数
@@ -23,7 +23,7 @@ func newCompositeEntry(pathList string) CompositeEntry {
 
 }
 
-func (self *CompositeEntry) readClass(className string) ([]byte, Entry, error) {
+func (self CompositeEntry) readClass(className string) ([]byte, Entry, error) {
 	for _, entry := range self {
 		data, from, err := entry.readClass(className)
 		{

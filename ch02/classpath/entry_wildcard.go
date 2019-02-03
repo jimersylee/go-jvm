@@ -1,12 +1,11 @@
 package classpath
 
 import (
-	"io/ioutil"
 	"path/filepath"
 )
 
 //目录型入口实现,实现Entry接口
-type DirEntry struct {
+type WildcardEntry struct {
 	absDir string
 }
 
@@ -15,7 +14,7 @@ func (self *DirEntry) string() string {
 }
 
 //构造函数
-func newDirEntry(path string) *DirEntry {
+func newWildcardEntry(path string) *DirEntry {
 	absDir, err := filepath.Abs(path)
 	if err != nil {
 		panic(err)
@@ -24,8 +23,7 @@ func newDirEntry(path string) *DirEntry {
 	return &DirEntry{absDir}
 }
 
-func (self *DirEntry) readClass(className string) ([]byte, Entry, error) {
-	fileName := filepath.Join(self.absDir, className)
-	data, err := ioutil.ReadFile(fileName)
-	return data, self, err
+func (self *WildcardEntry) readClass(className string) ([]byte, Entry, error) {
+
+	return nil, nil, nil
 }
