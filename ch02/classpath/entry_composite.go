@@ -8,8 +8,12 @@ import (
 //目录型入口实现,实现Entry接口
 type CompositeEntry []Entry
 
-func (self *CompositeEntry) String() string {
-	return self.String()
+func (self CompositeEntry) String() string {
+	strs := make([]string, len(self))
+	for i, entry := range self {
+		strs[i] = entry.String()
+	}
+	return strings.Join(strs, pathListSeparator)
 }
 
 //构造函数

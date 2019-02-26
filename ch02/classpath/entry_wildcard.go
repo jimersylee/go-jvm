@@ -1,29 +1,30 @@
 package classpath
 
 import (
+	"os"
 	"path/filepath"
+	"strings"
 )
 
-//目录型入口实现,实现Entry接口
-type WildcardEntry struct {
-	absDir string
-}
+func newWildcardEntry(path string) CompositeEntry {
+	baseDir := path[:len(path)-1] // remove *
+	compositeEntry := []Entry{}
 
-func (self *DirEntry) string() string {
-	return self.absDir
-}
-
-//构造函数
-func newWildcardEntry(path string) *DirEntry {
-	absDir, err := filepath.Abs(path)
-	if err != nil {
-		panic(err)
+	walkFn := func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if info.IsDir() && path != baseDir {
+			return filepath.SkipDir
+		}
+		if strings.HasSuffix(path, ".jar") || strings.HasSuffix(path, ".JAR") {
+			jarEntry := newZipEntry(path)
+			compositeEntry = append(compositeEntry, jarEntry)
+		}
+		return nil
 	}
 
-	return &DirEntry{absDir}
-}
+	filepath.Walk(baseDir, walkFn)
 
-func (self *WildcardEntry) readClass(className string) ([]byte, Entry, error) {
-
-	return nil, nil, nil
+	return compositeEntry
 }

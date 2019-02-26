@@ -12,7 +12,7 @@ type ZipEntry struct {
 	absDir string
 }
 
-func (self *ZipEntry) string() string {
+func (self *ZipEntry) String() string {
 	return self.absDir
 }
 
