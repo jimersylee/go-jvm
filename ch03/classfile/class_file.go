@@ -17,7 +17,22 @@ type ClassFile struct {
 	attributes   []AttributeInfo
 }
 
-func (self ClassFile) read(reader *ClassReader) {
+func (self *ClassFile) read(reader *ClassReader) {
+	self.readAndCheckMagic(reader)
+	self.readAndCheckVersion(reader)
+	self.constantPool = readConstantPool(reader)
+
+}
+
+func readConstantPool(reader *ClassReader) interface{} {
+
+}
+
+func (self *ClassFile) readAndCheckMagic(reader *ClassReader) {
+
+}
+
+func (self *ClassFile) readAndCheckVersion(reader *ClassReader) {
 
 }
 
