@@ -2,6 +2,14 @@ package classfile
 
 import "fmt"
 
+//常量池
+type ConstantPool struct {
+}
+
+func (pool *ConstantPool) getClassName(u uint16) string {
+	return ""
+}
+
 //类文件类
 type ClassFile struct {
 	//magic uint32
@@ -17,15 +25,47 @@ type ClassFile struct {
 	attributes   []AttributeInfo
 }
 
+func (self *ClassFile) MajorVersion() uint16 {
+	return self.majorVersion
+}
+
+//获取类名
+func (self *ClassFile) ClassName() string {
+	return self.constantPool.getClassName(self.thisClass)
+}
+
+//获取超类名字
+func (self *ClassFile) SuperClassName() string {
+	if self.superClass > 0 {
+		return self.constantPool.getClassName(self.superClass)
+	}
+	return ""
+}
+
 func (self *ClassFile) read(reader *ClassReader) {
 	self.readAndCheckMagic(reader)
 	self.readAndCheckVersion(reader)
 	self.constantPool = readConstantPool(reader)
+	self.accessFlags = reader.readUint16()
+	self.thisClass = reader.readUint16()
+	self.superClass = reader.readUint16()
+	self.interfaces = reader.readUint16s()
+	self.fields = readMembers(reader, self.constantPool)
+	self.methods = readMembers(reader, self.constantPool)
+	self.attributes = readAttributes(reader, self.constantPool)
+
+}
+
+func readAttributes(reader *ClassReader, constantPool interface{}) []interface{} {
+
+}
+
+func readMembers(reader *ClassReader, constantPool interface{}) []*interface{} {
 
 }
 
 func readConstantPool(reader *ClassReader) interface{} {
-
+	return ConstantPool{}
 }
 
 func (self *ClassFile) readAndCheckMagic(reader *ClassReader) {
