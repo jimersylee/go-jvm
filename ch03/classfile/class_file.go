@@ -1,14 +1,8 @@
 package classfile
 
-import "fmt"
-
-//常量池
-type ConstantPool struct {
-}
-
-func (pool *ConstantPool) getClassName(u uint16) string {
-	return ""
-}
+import (
+	"fmt"
+)
 
 //类文件类
 type ClassFile struct {
@@ -42,6 +36,15 @@ func (self *ClassFile) SuperClassName() string {
 	return ""
 }
 
+//从常量池获取接口名数组
+func (self *ClassFile) InterfaceNames() []string {
+	interfaceNames := make([]string, len(self.interfaces))
+	for i, cpIndex := range self.interfaces {
+		interfaceNames[i] = self.constantPool.getClassName(cpIndex)
+	}
+	return interfaceNames
+}
+
 func (self *ClassFile) read(reader *ClassReader) {
 	self.readAndCheckMagic(reader)
 	self.readAndCheckVersion(reader)
@@ -60,20 +63,26 @@ func readAttributes(reader *ClassReader, constantPool interface{}) []interface{}
 
 }
 
-func readMembers(reader *ClassReader, constantPool interface{}) []*interface{} {
-
-}
-
-func readConstantPool(reader *ClassReader) interface{} {
-	return ConstantPool{}
-}
-
+//验证java类文件头魔法数字0xCAFEBABE
 func (self *ClassFile) readAndCheckMagic(reader *ClassReader) {
-
+	magic := reader.readUint32()
+	if magic != 0xCAFEBABE {
+		panic("java.lang.ClassFormatError:magic!")
+	}
 }
 
+//读取和检查版本
 func (self *ClassFile) readAndCheckVersion(reader *ClassReader) {
+	self.minorVersion = reader.readUint16()
+	self.majorVersion = reader.readUint16()
+	switch self.majorVersion {
+	case 45:
+		return
+	case 46, 47, 48, 49, 50, 51, 52:
+		return
+	}
 
+	panic("java.lang.UnsupportedClassVersionError")
 }
 
 func Parse(classData []byte) (cf *ClassFile, err error) {
