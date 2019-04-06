@@ -1,7 +1,5 @@
 package classfile
 
-type AttributeInfo struct {
-}
 
 //表示字段和方法的结构体
 type MemberInfo struct {

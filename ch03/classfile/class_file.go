@@ -59,10 +59,6 @@ func (self *ClassFile) read(reader *ClassReader) {
 
 }
 
-func readAttributes(reader *ClassReader, constantPool interface{}) []interface{} {
-	return AttributeInfo{}
-}
-
 //验证java类文件头魔法数字0xCAFEBABE
 func (self *ClassFile) readAndCheckMagic(reader *ClassReader) {
 	magic := reader.readUint32()
