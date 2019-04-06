@@ -16,13 +16,13 @@ func readMembers(reader *ClassReader, cp ConstantPool) []*MemberInfo {
 	membersCount := reader.readUint16()
 	members := make([]*MemberInfo, membersCount)
 	for i := range members {
-		members[i] = reamMember(reader, cp)
+		members[i] = readMember(reader, cp)
 	}
 	return members
 }
 
 //读取字段或方法数据
-func reamMember(reader *ClassReader, constantPool ConstantPool) *MemberInfo {
+func readMember(reader *ClassReader, constantPool ConstantPool) *MemberInfo {
 	return &MemberInfo{
 		cp:              constantPool,
 		accessFlags:     reader.readUint16(),
