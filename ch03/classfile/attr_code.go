@@ -1,5 +1,6 @@
 package classfile
 
+//异常表入口
 type ExceptionTableEntry struct {
 	startPc   uint16
 	endPc     uint16
@@ -7,6 +8,7 @@ type ExceptionTableEntry struct {
 	catchType uint16
 }
 
+//代码属性
 type CodeAttribute struct {
 	cp                  ConstantPool
 	maxStacks           uint16
@@ -16,6 +18,7 @@ type CodeAttribute struct {
 	attributes          []AttributeInfo
 }
 
+//读取内容
 func (self *CodeAttribute) readInfo(reader *ClassReader) {
 	self.maxStacks = reader.readUint16()
 	self.maxLocals = reader.readUint16()
@@ -25,10 +28,12 @@ func (self *CodeAttribute) readInfo(reader *ClassReader) {
 	self.readAttributes(reader, self.cp)
 }
 
+//读取属性
 func (self *CodeAttribute) readAttributes(reader *ClassReader, pools ConstantPool) {
 
 }
 
-func readeExceptionTable(reader *ClassReader) []*ExceptionTableEntry {
+//读取异常表
+func readExceptionTable(reader *ClassReader) []*ExceptionTableEntry {
 
 }
