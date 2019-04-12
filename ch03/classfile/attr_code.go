@@ -24,16 +24,25 @@ func (self *CodeAttribute) readInfo(reader *ClassReader) {
 	self.maxLocals = reader.readUint16()
 	codeLength := reader.readUint32()
 	self.code = reader.readBytes(codeLength)
-	self.exceptionTableEntry = readeExceptionTable(reader)
+	self.exceptionTableEntry = readExceptionTable(reader)
 	self.readAttributes(reader, self.cp)
+}
+
+func readExceptionTable(reader *ClassReader) []*ExceptionTableEntry {
+	exceptionTableLength := reader.readUint16()
+	exceptionTable := make([]*ExceptionTableEntry, exceptionTableLength)
+	for i := range exceptionTable {
+		exceptionTable[i] = &ExceptionTableEntry{
+			startPc:   reader.readUint16(),
+			endPc:     reader.readUint16(),
+			handlerPc: reader.readUint16(),
+			catchType: reader.readUint16(),
+		}
+	}
+	return exceptionTable
 }
 
 //读取属性
 func (self *CodeAttribute) readAttributes(reader *ClassReader, pools ConstantPool) {
-
-}
-
-//读取异常表
-func readExceptionTable(reader *ClassReader) []*ExceptionTableEntry {
 
 }
