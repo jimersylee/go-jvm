@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"go-jvm/ch03/classfile"
 	"go-jvm/ch03/classpath"
 	"strings"
 )
