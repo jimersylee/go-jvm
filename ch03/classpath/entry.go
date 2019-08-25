@@ -1,17 +1,13 @@
 package classpath
 
-import (
-	"os"
-	"strings"
-)
+import "os"
+import "strings"
 
-//路径分隔符的字符串表示,如linux下是冒号
+// :(linux/unix) or ;(windows)
 const pathListSeparator = string(os.PathListSeparator)
 
-/**
-入口接口
-*/
 type Entry interface {
+	// className: fully/qualified/ClassName.class
 	readClass(className string) ([]byte, Entry, error)
 	String() string
 }
@@ -20,11 +16,14 @@ func newEntry(path string) Entry {
 	if strings.Contains(path, pathListSeparator) {
 		return newCompositeEntry(path)
 	}
+
 	if strings.HasSuffix(path, "*") {
 		return newWildcardEntry(path)
 	}
-	if strings.HasSuffix(path, ".jar") || strings.HasSuffix(path, ".JAR") || strings.HasSuffix(path, ".zip") ||
-		strings.HasSuffix(path, ".ZIP") {
+
+	if strings.HasSuffix(path, ".jar") || strings.HasSuffix(path, ".JAR") ||
+		strings.HasSuffix(path, ".zip") || strings.HasSuffix(path, ".ZIP") {
+
 		return newZipEntry(path)
 	}
 

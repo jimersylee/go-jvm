@@ -1,31 +1,31 @@
 package main
 
-import (
-	"flag"
-	"fmt"
-	"os"
-)
+import "flag"
+import "fmt"
+import "os"
 
-//命令行结构体
+// java [-options] class [args...]
 type Cmd struct {
 	helpFlag    bool
 	versionFlag bool
 	cpOption    string
+	XjreOption  string
 	class       string
 	args        []string
-	XjreOption  string
 }
 
-//解析cmd命令,返回命令行结构体
 func parseCmd() *Cmd {
 	cmd := &Cmd{}
+
 	flag.Usage = printUsage
 	flag.BoolVar(&cmd.helpFlag, "help", false, "print help message")
+	flag.BoolVar(&cmd.helpFlag, "?", false, "print help message")
 	flag.BoolVar(&cmd.versionFlag, "version", false, "print version and exit")
 	flag.StringVar(&cmd.cpOption, "classpath", "", "classpath")
 	flag.StringVar(&cmd.cpOption, "cp", "", "classpath")
 	flag.StringVar(&cmd.XjreOption, "Xjre", "", "path to jre")
 	flag.Parse()
+
 	args := flag.Args()
 	if len(args) > 0 {
 		cmd.class = args[0]
@@ -36,5 +36,6 @@ func parseCmd() *Cmd {
 }
 
 func printUsage() {
-	fmt.Printf("Usage: %s [-option] class [args...]\n", os.Args[0])
+	fmt.Printf("Usage: %s [-options] class [args...]\n", os.Args[0])
+	//flag.PrintDefaults()
 }

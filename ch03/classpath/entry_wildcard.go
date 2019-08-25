@@ -1,10 +1,8 @@
 package classpath
 
-import (
-	"os"
-	"path/filepath"
-	"strings"
-)
+import "os"
+import "path/filepath"
+import "strings"
 
 func newWildcardEntry(path string) CompositeEntry {
 	baseDir := path[:len(path)-1] // remove *
